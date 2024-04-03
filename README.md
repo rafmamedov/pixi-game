@@ -1,4 +1,4 @@
-# Mini-Game Prototype
+# Herdsman Mini-Game Prototype
 
 This project is a simple 2D prototype of a mini-game where the player controls a Main Hero to collect animals and move them to a designated destination point (yard). The game features a green game field where the player can interact, a red Main Hero circle representing the player's character, white circles representing animals, and a yellow destination point indicating the yard. The player's goal is to collect animals and move them to the yard to increase their score.
 
@@ -46,8 +46,4 @@ This project is a simple 2D prototype of a mini-game where the player controls a
 4. Open `index.html` with LiveServer in browser.
 
 ## Contributors
-- [Rafael Mamedov] - [rafmamedov@gmail.com] - [[GitHub Profile](https://github.com/rafmamedov)]
-
-## License
-This project is licensed under the [License Name] - see the [LICENSE.md](LICENSE.md) file for details.
-# pixi-game
+- Rafael Mamedov - rafmamedov@gmail.com - [GitHub Profile](https://github.com/rafmamedov)
