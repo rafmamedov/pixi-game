@@ -5,7 +5,7 @@ This project is a simple 2D prototype of a mini-game where the player controls a
 ## Description
 This project is a simple 2D prototype of a mini-game where the player controls a Main Hero to collect animals and move them to a designated destination point (yard). The game features a green game field where the player can interact, a red Main Hero circle representing the player's character, white circles representing animals, and a yellow destination point indicating the yard. The player's goal is to collect animals and move them to the yard to increase their score.
 
-## Acceptance Criteria (AC)
+## Implemented
 - Player can run the application and see the game field (green area) with the Main Hero (red circle).
 - Player can see a random number of animals (white circles) located on the game field at random positions.
 - Player can see the destination point: yard (yellow area).
