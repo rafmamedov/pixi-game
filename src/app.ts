@@ -8,6 +8,7 @@ interface Destination {
 const config = {
   GAME_WIDTH: window.innerWidth,
   GAME_HEIGHT: window.innerHeight,
+  YARD_SIZE: 200,
   YARD_POSITION: {
     X: window.innerWidth - 200,
     Y: window.innerHeight - 200,
@@ -27,13 +28,13 @@ class Animal {
     this.graphics.circle(0, 0, 15);
     this.graphics.fill();
     this.app.stage.addChild(this.graphics);
-  }
+  };
 
   setPosition(x: number, y: number) {
     this.graphics.x = x;
     this.graphics.y = y;
-  }
-}
+  };
+};
 
 class MainHero {
   app;
@@ -48,13 +49,13 @@ class MainHero {
     this.graphics.x = 50;
     this.graphics.y = 50;
     this.app.stage.addChild(this.graphics);
-  }
+  };
 
   setPosition(x: number, y: number) {
     this.graphics.x = x;
     this.graphics.y = y;
   }
-}
+};
 
 class Game {
   app: PIXI.Application<PIXI.Renderer>;
@@ -67,7 +68,7 @@ class Game {
   constructor() {
     this.app = new PIXI.Application();
     this.initializeGame();
-  }
+  };
 
   async initializeGame() {
     const { GAME_WIDTH, GAME_HEIGHT } = config;
@@ -79,7 +80,7 @@ class Game {
 
     document.body.appendChild(this.app.canvas);
     this.setupGame();
-  }
+  };
 
   setupGame() {
     this.createGameField();
@@ -91,36 +92,40 @@ class Game {
     this.startNewGame();
     this.setupListeners();
     this.app.ticker.add(this.update.bind(this));
-  }
+  };
 
   createGameField() {
+    const { GAME_WIDTH, GAME_HEIGHT } = config;
+
     this.gameField = new PIXI.Graphics();
     this.gameField.fill(0x0B6E00);
-    this.gameField.rect(0, 0, config.GAME_WIDTH, config.GAME_HEIGHT);
+    this.gameField.rect(0, 0, GAME_WIDTH, GAME_HEIGHT);
     this.gameField.fill();
     this.app.stage.addChild(this.gameField);
-  }
+  };
 
   createYard() {
+    const { YARD_POSITION, YARD_SIZE} = config;
+    const { X, Y } = YARD_POSITION;
     this.yard = new PIXI.Graphics();
     this.yard.fill(0xD1B01B);
-    this.yard.rect(config.YARD_POSITION.X, config.YARD_POSITION.Y, 200, 200);
+    this.yard.rect(X, Y, YARD_SIZE, YARD_SIZE);
     this.yard.fill();
     this.app.stage.addChild(this.yard);
-  }
+  };
 
   createMainHero() {
     this.mainHero = new MainHero(this.app);
-  }
+  };
 
   createScoreText() {
-    this.scoreText = new PIXI.Text('Score: 0', { fill: 0xFFFFFF });
+    this.scoreText = new PIXI.Text({ text: 'Score: 0', style: { fill: '#FFFFFF'}});
     this.scoreText.position.set(10, 10);
     this.app.stage.addChild(this.scoreText);
-  }
+  };
 
-  onClick(event: PointerEvent) {
-    const clickPosition = {
+  onClick(event: MouseEvent) {
+    const clickPosition: Destination = {
       x: event.clientX,
       y: event.clientY
     };
@@ -134,14 +139,16 @@ class Game {
   }
 
   update() {
+    const { HERO_SPEED } = config;
+
     if (this.mainHero.destination) {
       const dx = this.mainHero.destination.x - this.mainHero.graphics.x;
       const dy = this.mainHero.destination.y - this.mainHero.graphics.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
       if (distance > 1) {
         if (distance > 5) {
-          this.mainHero.graphics.x += dx / distance * config.HERO_SPEED;
-          this.mainHero.graphics.y += dy / distance * config.HERO_SPEED;
+          this.mainHero.graphics.x += dx / distance * HERO_SPEED;
+          this.mainHero.graphics.y += dy / distance * HERO_SPEED;
         } else {
           this.mainHero.destination = null;
         }
@@ -153,20 +160,24 @@ class Game {
     let animalsFollowing = 0;
 
     this.animals.forEach(animal => {
+      const { ANIMAL_SPEED, GROUP } = config;
       const dx = this.mainHero.graphics.x - animal.graphics.x;
       const dy = this.mainHero.graphics.y - animal.graphics.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      if (animalsFollowing < config.GROUP && distance < 100) {
+      if (animalsFollowing < GROUP && distance < 100) {
         if (distance > 20) {
-          animal.graphics.x += dx / distance * config.ANIMAL_SPEED;
-          animal.graphics.y += dy / distance * config.ANIMAL_SPEED;
+          animal.graphics.x += dx / distance * ANIMAL_SPEED;
+          animal.graphics.y += dy / distance * ANIMAL_SPEED;
           animalsFollowing++;
         }
       }
     });
 
     this.animals.forEach((animal, index) => {
-      if (animal.graphics.x > config.YARD_POSITION.X && animal.graphics.y > config.YARD_POSITION.Y) {
+      const { YARD_POSITION } = config;
+      const { X, Y } = YARD_POSITION;
+
+      if (animal.graphics.x > X && animal.graphics.y > Y) {
         this.score++;
         this.scoreText.text = `Score: ${this.score}`;
         this.animals.splice(index, 1);
@@ -180,8 +191,10 @@ class Game {
 
   startNewGame() {
     const numberOfAnimals = Math.floor(Math.random() * 10) + 5;
+
     for (let i = 0; i < numberOfAnimals; i++) {
       const animal = new Animal(this.app);
+
       animal.setPosition(Math.random() * 700, Math.random() * 500);
       this.animals.push(animal);
     }
