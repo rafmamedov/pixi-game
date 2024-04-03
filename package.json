@@ -1,0 +1,18 @@
+{
+  "name": "pixi-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Rafael Mamedov",
+  "license": "ISC",
+  "dependencies": {
+    "pixi.js": "^8.0.4"
+  },
+  "devDependencies": {
+    "@types/pixi.js": "^5.0.0",
+    "typescript": "^5.4.3"
+  }
+}
